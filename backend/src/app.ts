@@ -16,6 +16,7 @@ import ownerRoutes from './routes/ownerRoutes.js';
 
 import path from 'path';
 import fs from 'fs';
+import './types/express.js';
 
 const app = express();
 
@@ -46,7 +47,7 @@ if (env.NODE_ENV !== 'production') {
 }
 
 // Deep Health check endpoint (checks process liveness & PostgreSQL DB connectivity)
-app.get('/health', async (_req, res) => {
+app.get('/health', async (_req: express.Request, res: express.Response) => {
   try {
     await prisma.$queryRaw`SELECT 1`;
     return res.status(200).json({
@@ -79,7 +80,7 @@ const candidatePaths = [
 const frontendDist = candidatePaths.find((p) => fs.existsSync(p));
 if (frontendDist) {
   app.use(express.static(frontendDist));
-  app.get('*', (req, res, next) => {
+  app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/health')) {
       return next();
     }
