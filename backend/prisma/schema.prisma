@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+  STORE_OWNER
+}
+
+model User {
+  id                  String               @id @default(uuid())
+  name                String
+  email               String               @unique
+  passwordHash        String               @map("password_hash")
+  address             String
+  role                Role                 @default(USER)
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+
+  ownedStores         Store[]              @relation("StoreOwner")
+  ratings             Rating[]
+  refreshTokens       RefreshToken[]
+  auditLogs           AuditLog[]           @relation("AdminAuditLog")
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([email])
+  @@index([name])
+  @@index([role])
+  @@map("users")
+}
+
+model Store {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  address   String
+  ownerId   String   @map("owner_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  owner     User     @relation("StoreOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  ratings   Rating[]
+
+  @@index([ownerId])
+  @@index([name])
+  @@index([address])
+  @@map("stores")
+}
+
+model Rating {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  storeId     String   @map("store_id")
+  ratingValue Int      @map("rating_value")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, storeId])
+  @@index([storeId])
+  @@index([userId])
+  @@map("ratings")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  tokenHash String   @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  adminId    String   @map("admin_id")
+  action     String   // CREATE_USER, CREATE_STORE, ROLE_CHANGE
+  targetType String   @map("target_type") // USER, STORE
+  targetId   String   @map("target_id")
+  details    String?  // JSON formatted details string
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  admin User @relation("AdminAuditLog", fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([action])
+  @@map("audit_logs")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  tokenHash String   @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("password_reset_tokens")
+}
