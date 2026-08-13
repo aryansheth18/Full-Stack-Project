@@ -1,9 +1,9 @@
 import { Role } from '@prisma/client';
-import { prisma } from '../config/db.js';
-import { AppError } from '../errors/AppError.js';
-import { AuthService } from './authService.js';
-import { SignupInput, CreateUserInput, UpdatePasswordInput, QueryParamsInput } from '../validators/schemas.js';
-import { AuditService } from './auditService.js';
+import { prisma } from '../config/db';
+import { AppError } from '../errors/AppError';
+import { AuthService } from './authService';
+import { SignupInput, CreateUserInput, UpdatePasswordInput, QueryParamsInput } from '../validators/schemas';
+import { AuditService } from './auditService';
 
 export class UserService {
   static async signup(input: SignupInput) {

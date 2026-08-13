@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { Role } from '@prisma/client';
-import { AdminController } from '../controllers/adminController.js';
-import { authenticate, requireRole } from '../middleware/auth.js';
-import { validateBody, validateQuery } from '../middleware/validate.js';
+import { AdminController } from '../controllers/adminController';
+import { authenticate, requireRole } from '../middleware/auth';
+import { validateBody, validateQuery } from '../middleware/validate';
 import {
   createUserSchema,
   createStoreSchema,
   queryParamsSchema
-} from '../validators/schemas.js';
+} from '../validators/schemas';
 
 const router = Router();
 

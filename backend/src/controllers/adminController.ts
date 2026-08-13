@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { AdminService } from '../services/adminService.js';
-import { UserService } from '../services/userService.js';
-import { StoreService } from '../services/storeService.js';
-import { QueryParamsInput } from '../validators/schemas.js';
+import { AdminService } from '../services/adminService';
+import { UserService } from '../services/userService';
+import { StoreService } from '../services/storeService';
+import { QueryParamsInput } from '../validators/schemas';
 
 export class AdminController {
   static async getDashboardStats(_req: Request, res: Response, next: NextFunction) {
