@@ -2,7 +2,7 @@
 
 # 🌟 Store Rating Platform
 
-**A full-stack, enterprise-grade multi-tenant web application for store discovery, rating submissions, and administrative governance.**
+**Full-stack, enterprise-grade multi-tenant web application for store discovery, rating submissions, and administrative governance.**
 
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -11,75 +11,112 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-5.0-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Render](https://img.shields.io/badge/Deploy-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/)
+
+---
+
+### 🌐 Direct Localhost Links & Quick Access
+
+Run `npm run dev` and open these links directly in your browser:
+
+| Service | Localhost Direct Link | Description |
+| :--- | :--- | :--- |
+| 💻 **Frontend Web App** | [**http://localhost:5173**](http://localhost:5173) | Main React Web Application |
+| ⚙️ **Backend REST API** | [**http://localhost:5000**](http://localhost:5000) | Node.js / Express Server |
+| 📖 **Interactive Swagger Docs** | [**http://localhost:5000/api/docs**](http://localhost:5000/api/docs) | OpenAPI Interactive Documentation |
+| 🟢 **Health Check** | [**http://localhost:5000/health**](http://localhost:5000/health) | Process Liveness & DB Status |
+
+---
+
+### 🔑 Pre-Seeded Login Credentials
+
+| Role | Email | Password | Permissions |
+| :--- | :--- | :--- | :--- |
+| **System Admin** | `admin@storerating.com` | `AdminPass123!` | Full System Governance, Add/Delete Users |
+| **Store Owner** | `owner@storerating.com` | `OwnerPass123!` | Owner Dashboard, Store Analytics & Reviews |
+| **Normal User** | `user@storerating.com` | `UserPass123!` | Store Search, Filter, 1-5 Star Ratings |
 
 </div>
 
 ---
 
 ## 📌 Table of Contents
+- [⚡ Quickstart: How to Run Locally](#-quickstart-how-to-run-locally)
 - [✨ Key Features](#-key-features)
-- [👤 Role-Based Access Control (RBAC)](#-role-based-access-control-rbac)
-- [🔑 Default Test Credentials](#-default-test-credentials)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [📐 Database Schema & Architecture](#-database-schema--architecture)
-- [🚀 Quickstart & Local Setup](#-quickstart--local-setup)
-- [🐳 Docker Setup](#-docker-setup)
-- [☁️ Deploy to Render ($0 Free)](#️-deploy-to-render-0-free)
-- [🧪 Testing & Quality Assurance](#-testing--quality-assurance)
-- [🛡️ Security Features](#️-security-features)
+- [🛠️ Tech Stack & Architecture](#️-tech-stack--architecture)
+- [📐 Database ERD Diagram](#-database-erd-diagram)
+- [🧪 Running Tests & Verification](#-running-tests--verification)
+- [🛡️ Security Implementation](#️-security-implementation)
+- [📖 VS Code Run Guide](./VS_Code_Setup_and_Run_Guide.md)
+
+---
+
+## ⚡ Quickstart: How to Run Locally
+
+### Step 1: Clone Repository & Install Dependencies
+```bash
+git clone https://github.com/aryansheth18/Full-Stack-Project.git
+cd Full-Stack-Project
+npm install
+```
+
+### Step 2: Configure Local Environment Variables
+Create a `.env` file in `backend/` directory:
+```env
+PORT=5000
+NODE_ENV=development
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/storerating?schema=public"
+JWT_SECRET="super-secret-jwt-access-key-production-grade-32-chars"
+JWT_REFRESH_SECRET="super-secret-jwt-refresh-key-production-grade-32-chars"
+CORS_ORIGIN="http://localhost:5173"
+```
+
+### Step 3: Setup Database Schema & Seed Data
+```bash
+# Push Prisma schema to PostgreSQL database
+npm run prisma:push
+
+# Seed default admin, owner, user accounts & store data
+npm run seed
+```
+
+### Step 4: Start Dev Server & Launch Web App
+```bash
+npm run dev
+```
+
+👉 Open **[http://localhost:5173](http://localhost:5173)** in your browser!
 
 ---
 
 ## ✨ Key Features
 
 ### 👑 System Administrator
-- **Dashboard Metrics**: Real-time overview of total users, registered stores, and submitted ratings.
-- **User Governance**: Create, edit, inspect, and delete users (System Admins, Store Owners, Normal Users).
-- **Store Governance**: Add new stores, assign store owners, and edit store information.
-- **Audit Logging**: Immutable database logs tracking all administrative operations with admin IDs and timestamps.
+- **Dashboard Overview**: Metrics displaying total users, registered stores, and submitted ratings.
+- **User Governance**: Create, edit, inspect, and delete users (Admin, Owner, Normal User).
+- **Store Governance**: Register stores, assign store owners, and edit store details.
+- **Audit Logs**: Immutable database audit records tracking administrative actions.
 
 ### 🏪 Store Owner
-- **Owner Portal**: Private dashboard displaying owned stores, user feedback, and rating breakdowns.
-- **Performance Analytics**: View total ratings count, average star rating, and user breakdown per store.
+- **Owner Dashboard**: Displays owned stores, overall ratings, and user feedback reviews.
+- **Performance Analytics**: View star rating breakdowns per store.
 
 ### 👤 Normal User
 - **Store Discovery**: Search, filter, and sort stores by name, address, or overall rating.
-- **Rating Submissions**: Submit or modify 1-to-5 star ratings for stores.
-- **Smart Concurrency Guardrails**: Single active rating per user per store enforced at the database layer using composite unique constraints.
+- **Rating Submissions**: Submit or update 1-to-5 star ratings for stores.
+- **Concurrency Protection**: Single active rating per user per store enforced via unique database indexes.
 
 ---
 
-## 🔑 Default Test Credentials
+## 🛠️ Tech Stack & Architecture
 
-Pre-seeded database accounts available immediately upon launch:
-
-| Role | Email | Password | Access Rights |
-| :--- | :--- | :--- | :--- |
-| **System Admin** | `admin@storerating.com` | `AdminPass123!` | Full Governance, User Deletion, Audit Logs |
-| **Store Owner** | `owner@storerating.com` | `OwnerPass123!` | Owner Dashboard, Store Analytics |
-| **Normal User** | `user@storerating.com` | `UserPass123!` | Store Discovery, 1-5 Star Ratings |
+- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, TanStack React Query v5, React Router v6
+- **Backend**: Node.js, Express, TypeScript, Prisma ORM, Pino Logger, Swagger UI
+- **Database**: PostgreSQL
+- **Testing**: Jest + Supertest (Backend), Vitest + React Testing Library (Frontend), Playwright (E2E)
 
 ---
 
-## 🛠️ Tech Stack
-
-### Backend Architecture
-- **Runtime**: Node.js & Express (TypeScript)
-- **Database & ORM**: PostgreSQL with Prisma ORM
-- **Authentication**: Dual-token JWT (15m in-memory access token + 7d `httpOnly` refresh token with rotation)
-- **Security & Middleware**: Helmet, CORS, Express Rate Limit, Double-Submit Cookie CSRF protection
-- **Logging & Docs**: Pino Logger, Pino HTTP, Swagger / OpenAPI interactive docs (`/api/docs`)
-
-### Frontend Architecture
-- **Framework & Build**: React 18, Vite, TypeScript
-- **Styling & UI**: Tailwind CSS, Lucide React Icons
-- **State & Data Fetching**: TanStack React Query v5, Axios (with automatic token refresh interceptors)
-- **Routing**: React Router v6
-
----
-
-## 📐 Database Schema & Architecture
+## 📐 Database ERD Diagram
 
 ```mermaid
 erDiagram
@@ -128,95 +165,13 @@ erDiagram
 
 ---
 
-## 🚀 Quickstart & Local Setup
-
-### Prerequisites
-- **Node.js**: v18 or higher
-- **PostgreSQL**: v14 or higher (or Docker)
-
-### 1. Clone & Install Dependencies
-```bash
-# Clone the repository
-git clone https://github.com/aryansheth18/Full-Stack-Project.git
-cd Full-Stack-Project
-
-# Install all workspace dependencies
-npm install
-```
-
-### 2. Configure Environment Variables
-Copy `.env.example` in `backend/`:
-```bash
-cp backend/.env.example backend/.env
-```
-
-Ensure `backend/.env` contains your PostgreSQL connection string:
-```env
-PORT=5000
-NODE_ENV=development
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/storerating?schema=public"
-JWT_SECRET="supersecretjwtkey123456789012345"
-JWT_REFRESH_SECRET="supersecretrefreshkey1234567890123"
-CORS_ORIGIN="http://localhost:5173"
-```
-
-### 3. Push Database Schema & Seed Initial Data
-```bash
-# Generate Prisma Client & push schema to database
-npm run prisma:push
-
-# Seed database with default admin, owner, and user accounts
-npm run seed
-```
-
-### 4. Run Development Servers
-```bash
-# Runs frontend (http://localhost:5173) and backend (http://localhost:5000) concurrently
-npm run dev
-```
-
----
-
-## 🐳 Docker Setup
-
-Run the full stack (PostgreSQL + Express Backend + React Frontend) with 1 command:
+## 🧪 Running Tests & Verification
 
 ```bash
-docker compose up --build
-```
-
-- **Frontend App**: `http://localhost:5173`
-- **Backend API**: `http://localhost:5000`
-- **Swagger OpenAPI Documentation**: `http://localhost:5000/api/docs`
-- **Deep Health Check**: `http://localhost:5000/health`
-
----
-
-## ☁️ Deploy to Render ($0 Free)
-
-This repository includes a pre-configured `render.yaml` Blueprint for **100% Free** deployment on Render.
-
-### Method 1: Blueprint Deployment (1-Click)
-1. Go to [Render Dashboard](https://dashboard.render.com) -> Click **New +** -> **Blueprint**.
-2. Connect your GitHub repository: `aryansheth18/Full-Stack-Project`.
-3. Render automatically provisions:
-   - 🗄️ PostgreSQL Database (`store-rating-db`)
-   - ⚙️ Express Backend Web Service (`store-rating-backend`)
-   - 🌐 React Frontend Static Site (`store-rating-frontend`)
-4. Click **Apply**.
-
-### Method 2: Single Web Service Deployment
-See the detailed step-by-step guide in [`Render_Deployment_Guide.md`](./Render_Deployment_Guide.md).
-
----
-
-## 🧪 Testing & Quality Assurance
-
-```bash
-# Run complete test suite (Jest + Vitest)
+# Run all test suites (Backend Jest + Frontend Vitest)
 npm run test
 
-# Run Backend Integration & API Tests (34 Jest tests)
+# Run Backend Integration Tests (34 Jest tests)
 npm run test:backend
 
 # Run Frontend Component Tests (7 Vitest tests)
@@ -225,23 +180,21 @@ npm run test:frontend
 # Run End-to-End Tests (Playwright)
 npm run test:e2e
 
-# Production Typecheck & Build Validation
-npm run typecheck
+# Production Build Check
+npm run build
 ```
 
 ---
 
-## 🛡️ Security Features
-- 🔒 **Dual-Token Auth**: 15-minute access token (stored in memory) + 7-day `httpOnly` refresh token with automatic rotation.
-- 🛡️ **Double-Submit CSRF Cookie**: Prevents Cross-Site Request Forgery attacks across state-changing HTTP requests.
-- 🔑 **Password Hashing**: Strong bcrypt hashing with salt factor of 12.
-- 🚫 **Account Lockout**: 5-strike failed attempt lockout protection.
-- 📜 **Audit Logging**: Mandatory database audit trail for administrative creation and deletion actions.
+## 🛡️ Security Implementation
+- 🔒 **Dual-Token Auth**: 15m in-memory access token + 7d `httpOnly` refresh token with automatic rotation.
+- 🛡️ **Double-Submit CSRF Cookie**: Protects state-changing HTTP requests.
+- 🔑 **Account Lockout**: 5-strike failed attempt lockout protection (15 minutes).
+- 📜 **Audit Trail**: Logs administrative actions into `audit_logs` database table.
 
 ---
 
-## 📄 License & Guides
-- 📖 [VS Code Setup & Local Guide](./VS_Code_Setup_and_Run_Guide.md)
-- ☁️ [Render Deployment Guide](./Render_Deployment_Guide.md)
+## 📄 VS Code Run & Setup Guide
+For step-by-step VS Code terminal instructions, see [`VS_Code_Setup_and_Run_Guide.md`](./VS_Code_Setup_and_Run_Guide.md).
 
 Distributed under the MIT License.
