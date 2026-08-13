@@ -10,9 +10,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        fromDatabase:
-          name: store-rating-db
-          property: connectionString
+        value: postgresql://neondb_owner:npg_qzYmPZ9WA2uE@ep-broad-cloud-ax9ikf5a.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_REFRESH_SECRET
@@ -33,9 +31,3 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://store-rating-backend.onrender.com/api
-
-databases:
-  - name: store-rating-db
-    plan: free
-    databaseName: storerating
-    user: storerating_user
