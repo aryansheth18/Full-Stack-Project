@@ -14,9 +14,9 @@
 
 ---
 
-### 🌐 Direct Localhost Links & Quick Access
+### 🌐 Localhost Direct Access Links
 
-Run `npm run dev` and open these links directly in your browser:
+Run `npm run dev` in your terminal and open these links directly in your browser:
 
 | Service | Localhost Direct Link | Description |
 | :--- | :--- | :--- |
