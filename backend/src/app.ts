@@ -16,7 +16,6 @@ import ownerRoutes from './routes/ownerRoutes';
 
 import path from 'path';
 import fs from 'fs';
-import './types/express.js';
 
 const app = express();
 
