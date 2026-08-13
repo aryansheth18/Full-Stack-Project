@@ -24,7 +24,6 @@ services:
   - type: web
     name: store-rating-frontend
     env: static
-    plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/dist
     routes:
