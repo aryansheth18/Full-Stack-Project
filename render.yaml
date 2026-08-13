@@ -5,7 +5,7 @@ services:
     env: node
     plan: free
     rootDir: .
-    buildCommand: npm install && npm --prefix backend install && npm --prefix frontend install && npm run build && npm --prefix backend run prisma:push && npm --prefix backend run seed
+    buildCommand: npm install --include=dev && npm --prefix backend install --include=dev && npm --prefix frontend install --include=dev && npm run build && npm --prefix backend run prisma:push && npm --prefix backend run seed
     startCommand: npm --prefix backend start
     envVars:
       - key: NODE_ENV
@@ -24,7 +24,7 @@ services:
     name: store-rating-frontend
     env: static
     rootDir: .
-    buildCommand: cd frontend && npm install && npm run build
+    buildCommand: cd frontend && npm install --include=dev && npm run build
     staticPublishPath: ./frontend/dist
     routes:
       - type: rewrite
