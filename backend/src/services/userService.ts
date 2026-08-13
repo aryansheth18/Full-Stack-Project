@@ -204,7 +204,7 @@ export class UserService {
       const totalRatings = store.ratings.length;
       const avgRating =
         totalRatings > 0
-          ? Number((store.ratings.reduce((acc, r) => acc + r.ratingValue, 0) / totalRatings).toFixed(2))
+          ? Number((store.ratings.reduce((acc: number, r: { ratingValue: number }) => acc + r.ratingValue, 0) / totalRatings).toFixed(2))
           : 0;
 
       storeDetail = {
